@@ -1,0 +1,6 @@
+TODOS:
+1. [?] Get the "screenshot" of the scene heatmap
+2. [X] Get the "downscaled" configuration file
+3. [X] Get the coordinates of chunks (with selected pixels)
+4. [-] Run the tracing script
+5. [ ] Combine the results into a JSON file
