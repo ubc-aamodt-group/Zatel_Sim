@@ -32,6 +32,7 @@ def parse_toml():
         conf['workload']['shadow_rays'],
 
         "data/heatmap.ppm",
+        conf['heatmap']['scale'],
         conf['heatmap']['clusters'],
         conf['heatmap']['max_iter'],
         conf['heatmap']['epsilon'],
@@ -42,6 +43,8 @@ def parse_toml():
         conf['model']['section_height'],
         conf['model']['iterations'],
         conf['model']['enable_edges'],
+        conf['model']['all_pixels_in_chunks'],
+        conf['model']['const_percentage'],
         conf['model']['distribution'],
         conf['model']['num_pixels_scale'],
         conf['model']['min_trace_perc'],

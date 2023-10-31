@@ -37,7 +37,7 @@ def capture_heatmap():
 source {env.configs.embree_vars}
 export VK_ICD_FILENAMES={env.configs.nvidia_vk_icd_filenames}
 cd {env.configs.tools_tracer}/build/linux/bin
-./RayTracer --width {env.configs.width} --height {env.configs.height} --samples {env.configs.samples} --scene {env.configs.scene_number} --show-heatmap --heatmap-scale 0.5 --no-overlay --shadowrays {env.configs.shadow_rays} --shader-type {shader_type_to_code()}
+./RayTracer --width {env.configs.width} --height {env.configs.height} --samples {env.configs.samples} --scene {env.configs.scene_number} --show-heatmap --heatmap-scale {env.configs.heatmap_scale} --no-overlay --shadowrays {env.configs.shadow_rays} --shader-type {shader_type_to_code()}
 cp heatmap.ppm {d}/data/
     """
 

@@ -33,6 +33,7 @@ class Configs:
 
     # heatmap
     heatmap: str
+    heatmap_scale: float
     clusters: int
     max_iter: int
     epsilon: float
@@ -44,6 +45,8 @@ class Configs:
     section_height: int
     iterations: int
     enable_edges: bool
+    all_pixels_in_chunks: bool
+    const_percentage: float
     distribution: Union[str, list[float]]
     num_pixels_scale: float
     min_trace_perc: float

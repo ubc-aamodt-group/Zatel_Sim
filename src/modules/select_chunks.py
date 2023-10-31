@@ -3,6 +3,7 @@ import math
 import env
 from modules.helper_methods import dprint
 from modules.helper_methods import get_closest_product_pair
+from modules.file_handler import append_coordinates
 
 
 def select_chunks_coarse_grained(i):
@@ -39,11 +40,11 @@ def select_chunks_fine_grained(i):
     """
     Splitting the scene into small chunks, picking every i-th
     """
-    dprint(plvl.info, f"Getting {i}-th chunk's coordinates (fine-grained)...")
+    dprint(env.plvl.info, f"Getting {i}-th chunk's coordinates (fine-grained)...")
 
     available_coordinates = set()
 
-    sw, sh = 32, 2
+    sw, sh = 32, 8
 
     w, h = env.configs.width, env.configs.height
     n = env.configs.num_chunks
@@ -66,6 +67,12 @@ def select_chunks_fine_grained(i):
 
     dprint(env.plvl.info, f"Got the coordinates for {i}-th chunk (fine-grained)")
     return available_coordinates
+
+
+def add_chunk_coords(coords, out):
+    for coord in coords:
+        x, y = coord
+        append_coordinates(out, x, y)
 
 
 def select_chunks(i):

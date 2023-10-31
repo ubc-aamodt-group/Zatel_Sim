@@ -159,13 +159,14 @@ def select_boxes_for_color_map(color_map, num_boxes, bndrs):
     return boxes
 
 
-def add_pixels_in_boxes(boxes, out):
+def add_pixels_in_boxes(boxes, out, bndrs):
     for box in boxes:
         x, y = box
         for i in range(0, env.configs.section_height):
             for j in range(0, env.configs.section_width):
                 nx, ny = x + j, y + i
-                append_coordinates(out, nx, ny)
+                if (nx, ny) in bndrs:
+                    append_coordinates(out, nx, ny)
 
 
 def get_percentage_to_trace(heatmap_labels, bndrs, colors):
@@ -208,6 +209,8 @@ def select_sections(bndrs, out):
     pr = max(env.configs.min_trace_perc, pr * env.configs.num_pixels_scale)
 
     env.configs.num_representative_pixels = len(bndrs) * pr
+    if (env.configs.const_percentage >= 0.0):
+        env.configs.num_representative_pixels = len(bndrs) * env.configs.const_percentage
     env.change_configs(env.configs)
 
     # get number of boxes to be selected
@@ -222,4 +225,4 @@ def select_sections(bndrs, out):
         all_boxes.append(boxes)
 
     all_boxes = list(itertools.chain(*all_boxes))
-    add_pixels_in_boxes(all_boxes, out)
+    add_pixels_in_boxes(all_boxes, out, bndrs)

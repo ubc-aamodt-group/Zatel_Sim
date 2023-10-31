@@ -12,12 +12,13 @@ lavapipe_vk_icd_filenames = "/home/ggc/ray_tracing/mesa/lib/share/vulkan/icd.d/l
 width = 512
 height = 512
 samples = 2
-scene_name = "wknd"
-scene_number = 1
+scene_name = "bunny"
+scene_number = 18
 shader_type = "path-tracer"
 shadow_rays = 2
 
 [heatmap]
+scale = 0.5
 clusters = 5
 max_iter = 500
 epsilon = 0.05
@@ -25,9 +26,11 @@ epsilon = 0.05
 [model]
 gpuconfig = "gpgpusim.config"
 section_width = 32
-section_height = 8
+section_height = 2
 iterations = 1
 enable_edges = true
+all_pixels_in_chunks = false
+const_percentage = 0.8
 distribution = "uniform"
 num_pixels_scale = 0.5
 min_trace_perc = 0.05
