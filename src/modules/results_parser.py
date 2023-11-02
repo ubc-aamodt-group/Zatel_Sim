@@ -185,7 +185,7 @@ def parse_file_iterations(chunk_i):
     out = {}
 
     for c in range(env.configs.iterations):
-        path = f"data/tracer_out/stats/out_chunks_{env.configs.num_chunks}_{chunk_i}_{c}_{config}.txt"
+        path = f"{env.configs.uid}/data/tracer_out/stats/out_chunks_{env.configs.num_chunks}_{chunk_i}_{c}_{config}.txt"
         output_info = parse_file(config, path)
         if output_info is not None:
             output_infos.append(output_info)

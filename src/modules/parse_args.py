@@ -15,6 +15,7 @@ def parse_toml():
 
     new_configs = Configs(
         conf['output'],
+        conf['uid'],
 
         conf['tools']['path'],
         conf['tools']['tracer'],
@@ -31,14 +32,14 @@ def parse_toml():
         conf['workload']['shader_type'],
         conf['workload']['shadow_rays'],
 
-        "data/heatmap.ppm",
+        f"{conf['uid']}/data/heatmap.ppm",
         conf['heatmap']['scale'],
         conf['heatmap']['clusters'],
         conf['heatmap']['max_iter'],
         conf['heatmap']['epsilon'],
 
         conf['model']['gpuconfig'],
-        "data/gpgpusim.config_p",
+        f"{conf['uid']}/data/gpgpusim.config_p",
         conf['model']['section_width'],
         conf['model']['section_height'],
         conf['model']['iterations'],

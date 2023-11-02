@@ -13,6 +13,7 @@ class PrintLevels:
 class Configs:
     # general
     output: str
+    uid: str
 
     # tools
     tools_path: str

@@ -59,7 +59,7 @@ function execute_scene {
 
 			./RayTracer $args --shader-type ${SHADER_TYPE} --shadowrays ${SHADOW_RAYS} > $out_name_path 2>&1 &
 			PIDS+=($!)
-			sleep 240
+			sleep 200
 
 		done
 	done

@@ -1,10 +1,10 @@
 NUM_CHUNKS=4
-WIDTH="512"
-HEIGHT="512"
+WIDTH="128"
+HEIGHT="128"
 SAMPLES="2"
-OUT_DIR="/home/ggc/ray_tracing/Predictor/data/tracer_out/"
+OUT_DIR="/home/ggc/ray_tracing/Predictor/BUNNY_128_128_2_MC/data/tracer_out/"
 ITER_NUM=1
-COORDINATES_DIR="/home/ggc/ray_tracing/Predictor/data/coordinates/"
+COORDINATES_DIR="/home/ggc/ray_tracing/Predictor/BUNNY_128_128_2_MC/data/coordinates/"
 EMBREE_VARS="/opt/embree-3.12.2.x86_64.linux/embree-vars.sh"
 GPGPUSIM_DIR="/home/ggc/ray_tracing/gpgpu-sim_emerald/"
 RAY_TRACER_DIR="/home/ggc/ray_tracing/RayTracingInVulkan/"

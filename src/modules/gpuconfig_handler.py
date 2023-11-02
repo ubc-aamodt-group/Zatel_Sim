@@ -38,7 +38,7 @@ def downscale_gpuconfig():
 
     p.close()
 
-    subprocess.run(["cp", f"{os.path.join('data', 'gpgpusim.config_p')}", f"{os.path.join(env.configs.tools_tracer, 'build', 'linux', 'bin', 'gpgpusim.config_sample')}"])
+    subprocess.run(["cp", f"{os.path.join(env.configs.uid, 'data', 'gpgpusim.config_p')}", f"{os.path.join(env.configs.tools_tracer, 'build', 'linux', 'bin', 'gpgpusim.config_sample')}"])
 
     env.configs.num_chunks = gcd
     env.change_configs(env.configs)

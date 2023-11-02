@@ -7,8 +7,8 @@ from modules.helper_methods import shader_type_to_code
 
 
 def setup_script_env():
-    out_dir = os.path.join(os.getcwd(), "data/tracer_out/")
-    coords_dir = os.path.join(os.getcwd(), "data/coordinates/")
+    out_dir = os.path.join(os.getcwd(), f"{env.configs.uid}/data/tracer_out/")
+    coords_dir = os.path.join(os.getcwd(), f"{env.configs.uid}/data/coordinates/")
 
     shader_type = shader_type_to_code()
 
