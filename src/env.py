@@ -33,6 +33,7 @@ class Configs:
     shadow_rays: int
 
     # heatmap
+    heatmap_path: str
     heatmap: str
     heatmap_scale: float
     clusters: int

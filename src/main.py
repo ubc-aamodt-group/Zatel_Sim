@@ -13,7 +13,10 @@ from modules.results_handler import fetch_results
 
 if __name__ == '__main__':
     setup()
-    capture_heatmap()
+
+    if env.configs.heatmap_path == '':
+        capture_heatmap()
+
     downscale_gpuconfig()
 
     for i in range(env.configs.num_chunks):

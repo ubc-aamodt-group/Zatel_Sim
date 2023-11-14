@@ -32,7 +32,8 @@ def parse_toml():
         conf['workload']['shader_type'],
         conf['workload']['shadow_rays'],
 
-        f"{conf['uid']}/data/heatmap.ppm",
+        conf['heatmap']['path'],
+        (f"{conf['uid']}/data/heatmap.ppm" if conf['heatmap']['path'] == '' else conf['heatmap']['path']),
         conf['heatmap']['scale'],
         conf['heatmap']['clusters'],
         conf['heatmap']['max_iter'],

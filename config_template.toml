@@ -1,5 +1,5 @@
 output = "/home/ggc/ray_tracing/Predictor/out.json"
-uid = "WKND_512x512_2spp"
+uid = "GEN_HEATMAPS"
 
 [tools]
 path = "../"
@@ -13,13 +13,13 @@ lavapipe_vk_icd_filenames = "/home/ggc/ray_tracing/mesa/lib/share/vulkan/icd.d/l
 width = 512
 height = 512
 samples = 2
-scene_name = "wknd"
-scene_number = 1
+scene_name = <<scene_name>>
+scene_number = <<scene_number>>
 shader_type = "path-tracer"
 shadow_rays = 2
 
 [heatmap]
-path = "heatmaps/512x512_2spp/1.ppm"
+path = <<heatmap_path>>
 scale = 1.0
 clusters = 5
 max_iter = 500
