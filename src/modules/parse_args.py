@@ -41,6 +41,7 @@ def parse_toml():
 
         conf['model']['gpuconfig'],
         f"{conf['uid']}/data/gpgpusim.config_p",
+        conf['model']['downscale'],
         conf['model']['section_width'],
         conf['model']['section_height'],
         conf['model']['iterations'],

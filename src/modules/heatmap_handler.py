@@ -26,6 +26,18 @@ def capture_heatmap():
                     os.path.join('src', 'scripts', 'RayTracing.rgen_heatmap_on'),
                     os.path.join(env.configs.tools_tracer, 'assets', 'shaders', 'RayTracing.rgen')])
 
+    subprocess.run(['cp',
+                    os.path.join('src', 'scripts', 'TraceAO.rgen_heatmap_on'),
+                    os.path.join(env.configs.tools_tracer, 'assets', 'shaders', 'TraceAO.rgen')])
+
+    subprocess.run(['cp',
+                    os.path.join('src', 'scripts', 'TraceShadow.rgen_heatmap_on'),
+                    os.path.join(env.configs.tools_tracer, 'assets', 'shaders', 'TraceShadow.rgen')])
+
+    subprocess.run(['cp',
+                    os.path.join('src', 'scripts', 'TraceAnyhit.rgen_heatmap_on'),
+                    os.path.join(env.configs.tools_tracer, 'assets', 'shaders', 'TraceAnyhit.rgen')])
+
     d = os.getcwd()
 
     os.chdir(env.configs.tools_tracer)

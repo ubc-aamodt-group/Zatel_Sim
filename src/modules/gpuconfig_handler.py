@@ -19,7 +19,7 @@ def downscale_gpuconfig():
                 v = int(line.split(' ')[1])
                 values.append(v)
 
-    gcd = math.gcd(*values)
+    gcd = math.gcd(*values) if env.configs.to_downscale else 1
     
     p = open(env.configs.downscaled_gpusimconfig, 'w')
 

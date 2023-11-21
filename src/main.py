@@ -17,28 +17,28 @@ if __name__ == '__main__':
     if env.configs.heatmap_path == '':
         capture_heatmap()
 
-    downscale_gpuconfig()
-
-    for i in range(env.configs.num_chunks):
-        valid_coords = select_chunks(i)
-
-        if env.configs.all_pixels_in_chunks:
-            out_coords = f"{env.configs.uid}/data/coordinates/chunk_{i}_0.coords"
-            add_chunk_coords(valid_coords, out_coords)
-
-            out_visualization = f"{env.configs.uid}/data/debug/chunk_{i}_0_visualize.png"
-            visualize_selected_pixels(out_coords, out_visualization)
-            dprint(env.plvl.info, f"Visualized chunk {i}")
-        else:
-            for k in range(env.configs.iterations):
-                out_coords = f"{env.configs.uid}/data/coordinates/chunk_{i}_{k}.coords"
-                select_sections(valid_coords, out_coords)
-
-                if env.configs.debug:
-                    out_visualization = f"{env.configs.uid}/data/debug/chunk_{i}_{k}_visualize.png"
-                    visualize_selected_pixels(out_coords, out_visualization)
-                    dprint(env.plvl.info, f"Visualized chunk {i} {k}")
-
-    setup_script_env()
-    run_tracer_script()
-    fetch_results()
+    # downscale_gpuconfig()
+    #
+    # for i in range(env.configs.num_chunks):
+    #     valid_coords = select_chunks(i)
+    #
+    #     if env.configs.all_pixels_in_chunks:
+    #         out_coords = f"{env.configs.uid}/data/coordinates/chunk_{i}_0.coords"
+    #         add_chunk_coords(valid_coords, out_coords)
+    #
+    #         out_visualization = f"{env.configs.uid}/data/debug/chunk_{i}_0_visualize.png"
+    #         visualize_selected_pixels(out_coords, out_visualization)
+    #         dprint(env.plvl.info, f"Visualized chunk {i}")
+    #     else:
+    #         for k in range(env.configs.iterations):
+    #             out_coords = f"{env.configs.uid}/data/coordinates/chunk_{i}_{k}.coords"
+    #             select_sections(valid_coords, out_coords)
+    #
+    #             if env.configs.debug:
+    #                 out_visualization = f"{env.configs.uid}/data/debug/chunk_{i}_{k}_visualize.png"
+    #                 visualize_selected_pixels(out_coords, out_visualization)
+    #                 dprint(env.plvl.info, f"Visualized chunk {i} {k}")
+    #
+    # setup_script_env()
+    # run_tracer_script()
+    # fetch_results()

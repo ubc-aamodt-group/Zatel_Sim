@@ -1,5 +1,5 @@
-output = "/home/ggc/ray_tracing/Predictor/out.json"
-uid = "WKND_512x512_2spp"
+output = "out.json"
+uid = "GEN_HEATMAPS"
 
 [tools]
 path = "../"
@@ -15,11 +15,11 @@ height = 512
 samples = 2
 scene_name = "wknd"
 scene_number = 1
-shader_type = "path-tracer"
-shadow_rays = 2
+shader_type = "ambient-occlusion"
+shadow_rays = 4
 
 [heatmap]
-path = "heatmaps/512x512_2spp/1.ppm"
+path = ""
 scale = 1.0
 clusters = 5
 max_iter = 500
@@ -27,12 +27,13 @@ epsilon = 0.05
 
 [model]
 gpuconfig = "gpgpusim.config"
+downscale = false
 section_width = 32
 section_height = 2
 iterations = 1
 enable_edges = true
 all_pixels_in_chunks = false
-const_percentage = 0.8
+const_percentage = 0.1
 distribution = "uniform"
 num_pixels_scale = 0.5
 min_trace_perc = 0.05

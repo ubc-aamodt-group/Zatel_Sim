@@ -43,6 +43,7 @@ class Configs:
     # model
     gpgpusim_config: str
     downscaled_gpusimconfig: str
+    to_downscale: bool
     section_width: int
     section_height: int
     iterations: int
