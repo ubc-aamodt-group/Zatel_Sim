@@ -19,7 +19,7 @@ def downscale_gpuconfig():
                 v = int(line.split(' ')[1])
                 values.append(v)
 
-    gcd = math.gcd(*values) if env.configs.to_downscale else 1
+    gcd = math.gcd(*values) if env.configs.downscale_factor < 0 else env.configs.downscale_factor
     
     p = open(env.configs.downscaled_gpusimconfig, 'w')
 
@@ -41,6 +41,7 @@ def downscale_gpuconfig():
     subprocess.run(["cp", f"{os.path.join(env.configs.uid, 'data', 'gpgpusim.config_p')}", f"{os.path.join(env.configs.tools_tracer, 'build', 'linux', 'bin', 'gpgpusim.config_sample')}"])
 
     env.configs.num_chunks = gcd
+    env.configs.perc_per_chunk = [1 for _ in range(gcd)]
     env.change_configs(env.configs)
 
     dprint(env.plvl.info, f"Downscaled each selected parameter of gpgpusim config by {gcd}")

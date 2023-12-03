@@ -1,17 +1,14 @@
-source scenes.sh
+#!/bin/bash
+
+SCENES=($@)
 
 declare -A scenes=()
 
 PIDS=()
-# DISTS=("uniform" "temp-exp")
-DISTS=("uniform")
+PERCS=(1 2 4 8 16)
+CHUNK_TYPES=("fine-grained" "coarse-grained")
 
 function populate_config {
-	all_pixels="false"
-	if [ $8 == "1.1" ]; then
-		all_pixels="true"
-	fi
-
 	sed -e "s|<<output>>|$1|g" \
 		-e "s|<<uid>>|$2|g" \
 		-e "s|<<scene_name>>|$3|g" \
@@ -19,10 +16,9 @@ function populate_config {
 		-e "s|<<shader_type>>|$5|g" \
 		-e "s|<<shadow_rays>>|$6|g" \
 		-e "s|<<heatmap_path>>|$7|g" \
-		-e "s|<<const_perc>>|$8|g" \
-		-e "s|<<dist>>|$9|g" \
-		-e "s|<<all_pixels>>|${all_pixels}|g" \
-		config_template.toml > config.toml
+		-e "s|<<downscale_factor>>|$8|g" \
+		-e "s|<<chunk_type>>|$9|g" \
+		config_template_p2.toml > config.toml
 }
 
 function get_args {
@@ -40,7 +36,7 @@ source /opt/embree-3.12.2.x86_64.linux/embree-vars.sh
 pyenv activate pvenv
 
 for scene_name in "${!scenes[@]}"; do
-	for dist in "${DISTS[@]}"
+	for ct in "${CHUNK_TYPES[@]}"
 	do
 		scene_name_parts=(${scene_name//_/ })
 		scene="${scene_name_parts[0]}"
@@ -54,34 +50,28 @@ for scene_name in "${!scenes[@]}"; do
 
 		mkdir -p "outputs/512x512_2spp/${scene_name}/predictor_outputs/"
 
-		for p in {10..10..10}
+		for df in "${PERCS[@]}"
 		do
-			heatmap_path="/home/ggc/ray_tracing/Predictor/heatmaps/512x512_2spp/${shader}/${scenes[$scene_name]}.ppm"
-			out_dir="outputs/512x512_2spp/${scene_name}/${dist}/p${p}"
+			heatmap_path="/ggc/ray_tracing/Predictor/heatmaps/512x512_2spp/${shader}/${scenes[$scene_name]}.ppm"
+			out_dir="outputs/512x512_2spp/${scene_name}/${ct}/f${df}"
+			files_out="/out_files/512x512_2spp/${scene_name}/"
+			mkdir -p "${files_out}"
 			mkdir -p "${out_dir}"
 
-			perc="${p}"
-			if [ $perc == "100" ]
-			then
-				perc="1.1"
-			else
-				perc="0.0${p}"
-			fi
-
 			populate_config \
-				"\"outputs/512x512_2spp/${scene_name}/${p}_${dist}.json\"" \
+				"\"/out_files/512x512_2spp/${scene_name}/${df}_${ct}.json\"" \
 				"\"${out_dir}\"" \
 				"\"${scene}\"" \
 				"${scenes[$scene_name]}" \
 				"\"${shader}\"" \
 				"${num_rays}" \
 				"\"${heatmap_path}\"" \
-				"${perc}" \
-				"\"${dist}\""
+				"${df}" \
+				"\"${ct}\""
 
-			python3.11 src/main.py > "outputs/512x512_2spp/${scene_name}/predictor_outputs/${p}_${dist}.txt" 2>&1 &
+			python3.11 src/main.py > "outputs/512x512_2spp/${scene_name}/predictor_outputs/${df}_${ct}.txt" 2>&1 &
 			PIDS+=($!)
-			sleep 480
+			sleep 500
 		done
 	done
 done
@@ -94,7 +84,7 @@ for pid in "${PIDS[@]}"; do
 	echo "waited for test!"
 done
 
-curl \
-	-H 'Title: EXPERIMENTS DONE' \
-	-d 'Finished executing all the scenes' \
-	ntfy.sh/eiAizI8HMMHAqFPyLBYvkTY3Y2y6e7dAg1s5H8BOKTw3XRqeBbC61
+# curl \
+# 	-H 'Title: EXPERIMENTS DONE' \
+# 	-d 'Finished executing all the scenes' \
+# 	ntfy.sh/eiAizI8HMMHAqFPyLBYvkTY3Y2y6e7dAg1s5H8BOKTw3XRqeBbC61

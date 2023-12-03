@@ -45,7 +45,7 @@ def harmonic_avg_metric(metric, infos, k):
         return 0 if v == 0 else k / v
 
 
-def parse_file(config, path):
+def parse_file(config, path, chunk_i):
     output_info = {
         "config": config,
         "bwutil_sum": 0,
@@ -71,7 +71,7 @@ def parse_file(config, path):
 
             elif "gpu_sim_cycle" in line:
                 nums = re.findall(r'\d+', line)
-                output_info["gpu_sim_cycle"] = int(nums[0])
+                output_info["gpu_sim_cycle"] = int(nums[0]) / env.configs.perc_per_chunk[chunk_i]
 
             elif "rt_avg_nodes_per_ray" in line:
                 nums = re.findall(r'\d+', line)
@@ -186,7 +186,7 @@ def parse_file_iterations(chunk_i):
 
     for c in range(env.configs.iterations):
         path = f"{env.configs.uid}/data/tracer_out/stats/out_chunks_{env.configs.num_chunks}_{chunk_i}_{c}_{config}.txt"
-        output_info = parse_file(config, path)
+        output_info = parse_file(config, path, chunk_i)
         if output_info is not None:
             output_infos.append(output_info)
 

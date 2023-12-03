@@ -3,11 +3,11 @@ uid = <<uid>>
 
 [tools]
 path = "../"
-tracer = "/ggc/ray_tracing/RayTracingInVulkan/"
-gpgpusim = "/ggc/ray_tracing/gpgpu-sim_emerald/"
+tracer = "/home/ggc/ray_tracing/RayTracingInVulkan/"
+gpgpusim = "/home/ggc/ray_tracing/gpgpu-sim_emerald/"
 embree_vars = "/opt/embree-3.12.2.x86_64.linux/embree-vars.sh"
 nvidia_vk_icd_filenames = "/etc/vulkan/icd.d/nvidia_icd.json"
-lavapipe_vk_icd_filenames = "/ggc/ray_tracing/mesa/lib/share/vulkan/icd.d/lvp_icd.x86_64.json"
+lavapipe_vk_icd_filenames = "/home/ggc/ray_tracing/mesa/lib/share/vulkan/icd.d/lvp_icd.x86_64.json"
 
 [workload]
 width = 512
@@ -27,7 +27,7 @@ epsilon = 0.05
 
 [model]
 gpuconfig = "gpgpusim.config"
-downscale_factor = 1
+downscale = false
 section_width = 32
 section_height = 2
 iterations = 1
@@ -42,7 +42,6 @@ chunks_type = "coarse-grained"
 debug = true
 metrics_to_collect = [
 	'gpu_ipc',
-	'gpu_sim_cycle',
 	'rt_avg_nodes_per_ray',
 	'L1D_total_cache_miss_rate',
 	'L2_total_cache_miss_rate',

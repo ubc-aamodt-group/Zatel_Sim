@@ -4,7 +4,25 @@ declare -A scenes=()
 
 SHADERS=("path-tracer" "shadow" "ambient-occlusion")
 
+# function populate_config {
+# 	sed -e "s|<<output>>|$1|g" \
+# 		-e "s|<<uid>>|$2|g" \
+# 		-e "s|<<scene_name>>|$3|g" \
+# 		-e "s|<<scene_number>>|$4|g" \
+# 		-e "s|<<shader_type>>|$5|g" \
+# 		-e "s|<<shadow_rays>>|$6|g" \
+# 		-e "s|<<heatmap_path>>|$7|g" \
+# 		-e "s|<<downscale>>|$8|g" \
+# 		-e "s|<<const_perc>>|$9|g" \
+# 		config_template.toml > config.toml
+# }
+
 function populate_config {
+	all_pixels="false"
+	if [ $8 == "1.1" ]; then
+		all_pixels="true"
+	fi
+
 	sed -e "s|<<output>>|$1|g" \
 		-e "s|<<uid>>|$2|g" \
 		-e "s|<<scene_name>>|$3|g" \
@@ -12,8 +30,9 @@ function populate_config {
 		-e "s|<<shader_type>>|$5|g" \
 		-e "s|<<shadow_rays>>|$6|g" \
 		-e "s|<<heatmap_path>>|$7|g" \
-		-e "s|<<downscale>>|$8|g" \
-		-e "s|<<const_perc>>|$9|g" \
+		-e "s|<<const_perc>>|$8|g" \
+		-e "s|<<dist>>|$9|g" \
+		-e "s|<<all_pixels>>|${all_pixels}|g" \
 		config_template.toml > config.toml
 }
 
@@ -47,8 +66,8 @@ for scene in "${!scenes[@]}"; do
 			"\"${shader}\"" \
 			"${num_rays}" \
 			"\"\"" \
-			"false" \
-			"0.1"
+			"1.1" \
+			"\"uniform\""
 
 		python3.11 src/main.py
 		cp "GEN_HEATMAPS/data/heatmap.ppm" "heatmaps/512x512_2spp/${shader}/${scenes[$scene]}.ppm"

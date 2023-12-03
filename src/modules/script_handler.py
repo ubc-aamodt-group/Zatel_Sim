@@ -76,11 +76,12 @@ def run_tracer_script():
                     os.path.join(env.configs.tools_tracer, 'build', 'linux', 'bin', script_name),
                     f'{env.configs.scene_name}={env.configs.scene_number}'])
 
-    wrds = env.configs.uid.split('/')
-    wrds_conf = wrds[1]
-    wrds_scene = wrds[2]
-    wrds_perc = wrds[3][1:3]
-
-    subprocess.run(['curl', '-H', 'Title: TRACING DONE', '-d',
-                    f"DONE {wrds_conf} - {wrds_scene} - {wrds_perc}%",
-                   'ntfy.sh/eiAizI8HMMHAqFPyLBYvkTY3Y2y6e7dAg1s5H8BOKTw3XRqeBbC61'])
+    # wrds = env.configs.uid.split('/')
+    # wrds_conf = wrds[1]
+    # wrds_scene = wrds[2]
+    # wrds_dist = wrds[3]
+    # wrds_perc = wrds[4][1:3]
+    #
+    # subprocess.run(['curl', '-H', 'Title: TRACING DONE', '-d',
+    #                 f"DONE {wrds_conf} - {wrds_dist} - {wrds_scene} - {wrds_perc}%",
+    #                'ntfy.sh/eiAizI8HMMHAqFPyLBYvkTY3Y2y6e7dAg1s5H8BOKTw3XRqeBbC61'])

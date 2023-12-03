@@ -1,0 +1,6 @@
+test 26157
+waited for test!
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   249  100   216  100    33   1430    218 --:--:-- --:--:-- --:--:--  1649
+{"id":"kUCZuxqm8m3Z","time":1700942315,"expires":1700985515,"event":"message","topic":"eiAizI8HMMHAqFPyLBYvkTY3Y2y6e7dAg1s5H8BOKTw3XRqeBbC61","title":"EXPERIMENTS DONE","message":"Finished executing all the scenes"}

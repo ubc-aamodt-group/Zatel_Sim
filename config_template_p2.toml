@@ -27,18 +27,18 @@ epsilon = 0.05
 
 [model]
 gpuconfig = "gpgpusim.config"
-downscale_factor = 1
+downscale_factor = <<downscale_factor>>
 section_width = 32
 section_height = 2
 iterations = 1
 enable_edges = true
-all_pixels_in_chunks = <<all_pixels>>
-const_percentage = <<const_perc>>
-distribution = <<dist>>
+all_pixels_in_chunks = true
+const_percentage = 1.0
+distribution = "uniform"
 num_pixels_scale = 0.5
 min_trace_perc = 0.05
 shared_parameters = ["gpgpu_n_clusters", "gpgpu_n_mem"]
-chunks_type = "coarse-grained"
+chunks_type = <<chunk_type>>
 debug = true
 metrics_to_collect = [
 	'gpu_ipc',

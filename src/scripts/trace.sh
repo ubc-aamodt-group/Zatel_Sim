@@ -33,6 +33,7 @@ function setup_env {
 	mkdir -p $OUT_DIR/$OUT_PPM &&
 	mkdir -p $OUT_DIR/$OUT_AERIAL &&
 
+	export CPATH="/usr/lib/gcc/x86_64-linux-gnu/9/include/" &&
 	cd "${GPGPUSIM_DIR}" &&
 	export VK_ICD_FILENAMES=${ICD_FILENAMES} &&
 	source setup_environment &&

@@ -179,7 +179,7 @@ def get_percentage_to_trace(heatmap_labels, bndrs, colors):
     return r
 
 
-def select_sections(bndrs, out):
+def select_sections(bndrs, out, chunk_index):
 
     # get simplified heatmap information
     heatmap_info = get_simplified_heatmap_pixels(env.configs.heatmap)
@@ -198,8 +198,6 @@ def select_sections(bndrs, out):
                     ((colorsys.rgb_to_hsv(*color_map[0].tolist())[0] + 0.14)
                      % 1.0))
 
-    distribution_percentages = get_distributions(color_maps)
-
     # update num_representative_pixels
     cluster_colors = list(map(lambda color_map:
                          1 - ((colorsys.rgb_to_hsv(*color_map[0].tolist())[0] + 0.14) % 1.0),
@@ -209,9 +207,14 @@ def select_sections(bndrs, out):
     pr = max(env.configs.min_trace_perc, pr * env.configs.num_pixels_scale)
 
     env.configs.num_representative_pixels = len(bndrs) * pr
+    env.configs.perc_per_chunk[chunk_index] = pr
+
     if (env.configs.const_percentage >= 0.0):
         env.configs.num_representative_pixels = len(bndrs) * env.configs.const_percentage
+        env.configs.perc_per_chunk[chunk_index] = env.configs.const_percentage
     env.change_configs(env.configs)
+
+    distribution_percentages = get_distributions(color_maps)
 
     # get number of boxes to be selected
     num_sections = int(math.ceil(env.configs.num_representative_pixels /

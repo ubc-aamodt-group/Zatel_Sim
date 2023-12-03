@@ -43,7 +43,7 @@ class Configs:
     # model
     gpgpusim_config: str
     downscaled_gpusimconfig: str
-    to_downscale: bool
+    downscale_factor: int
     section_width: int
     section_height: int
     iterations: int
@@ -60,6 +60,7 @@ class Configs:
 
     # TBD
     num_chunks: int
+    perc_per_chunk: list[float]
 
 
 plvl = PrintLevels(

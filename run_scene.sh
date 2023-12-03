@@ -1,10 +1,11 @@
-source scenes.sh
+#!/bin/bash
+
+SCENES=($@)
 
 declare -A scenes=()
 
 PIDS=()
-# DISTS=("uniform" "temp-exp")
-DISTS=("uniform")
+DISTS=("uniform" "temp-exp")
 
 function populate_config {
 	all_pixels="false"
@@ -54,10 +55,12 @@ for scene_name in "${!scenes[@]}"; do
 
 		mkdir -p "outputs/512x512_2spp/${scene_name}/predictor_outputs/"
 
-		for p in {10..10..10}
+		for p in {10..100..10}
 		do
-			heatmap_path="/home/ggc/ray_tracing/Predictor/heatmaps/512x512_2spp/${shader}/${scenes[$scene_name]}.ppm"
+			heatmap_path="/ggc/ray_tracing/Predictor/heatmaps/512x512_2spp/${shader}/${scenes[$scene_name]}.ppm"
 			out_dir="outputs/512x512_2spp/${scene_name}/${dist}/p${p}"
+			files_out="/out_files/512x512_2spp/${scene_name}/"
+			mkdir -p "${files_out}"
 			mkdir -p "${out_dir}"
 
 			perc="${p}"
@@ -65,11 +68,11 @@ for scene_name in "${!scenes[@]}"; do
 			then
 				perc="1.1"
 			else
-				perc="0.0${p}"
+				perc="0.${p}"
 			fi
 
 			populate_config \
-				"\"outputs/512x512_2spp/${scene_name}/${p}_${dist}.json\"" \
+				"\"/out_files/512x512_2spp/${scene_name}/${p}_${dist}.json\"" \
 				"\"${out_dir}\"" \
 				"\"${scene}\"" \
 				"${scenes[$scene_name]}" \
@@ -81,7 +84,7 @@ for scene_name in "${!scenes[@]}"; do
 
 			python3.11 src/main.py > "outputs/512x512_2spp/${scene_name}/predictor_outputs/${p}_${dist}.txt" 2>&1 &
 			PIDS+=($!)
-			sleep 480
+			sleep 500
 		done
 	done
 done
@@ -94,7 +97,7 @@ for pid in "${PIDS[@]}"; do
 	echo "waited for test!"
 done
 
-curl \
-	-H 'Title: EXPERIMENTS DONE' \
-	-d 'Finished executing all the scenes' \
-	ntfy.sh/eiAizI8HMMHAqFPyLBYvkTY3Y2y6e7dAg1s5H8BOKTw3XRqeBbC61
+# curl \
+# 	-H 'Title: EXPERIMENTS DONE' \
+# 	-d 'Finished executing all the scenes' \
+# 	ntfy.sh/eiAizI8HMMHAqFPyLBYvkTY3Y2y6e7dAg1s5H8BOKTw3XRqeBbC61
