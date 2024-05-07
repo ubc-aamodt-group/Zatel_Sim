@@ -8,7 +8,12 @@ def get_collection_coords(collection: str):
     """
     Return coordinates to trace from a coordinates file
     """
-    collection_file = open(collection, "r")
+    collection_file = None
+    try:
+        collection_file = open(collection, "r")
+    except:
+        print("GET COLLECTION COORDS")
+
     pixel_coords = []
 
     while True:
@@ -41,9 +46,13 @@ def visualize_selected_pixels(collection: str, out: str):
     
     selected_pixels = get_collection_coords(collection)
 
+    dprint(env.plvl.info, f"Selected Pixels: {selected_pixels}")
     pixels_as_row[selected_pixels] *= DIM_SCALE
 
     p_img = pixels_as_row.reshape((img.shape))
+
+    p = len(selected_pixels) / (env.configs.width * env.configs.height / env.configs.num_chunks)
+    dprint(env.plvl.info, f"Percentage of pixels selected: {p}")
 
     # cv2.imshow('p_img', p_img)
     # cv2.waitKey(0)

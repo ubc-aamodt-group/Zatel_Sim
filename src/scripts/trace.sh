@@ -45,6 +45,7 @@ function setup_env {
 # $2 for scene number
 function execute_scene {
 	mkdir -p "$OUT_DIR/$OUT_STATS/$1"
+	mkdir -p "/out_files/512x512_2spp/$1"
 
 	local args="--width ${WIDTH} --height ${HEIGHT} --scene $2 --samples ${SAMPLES}"
 
@@ -52,6 +53,7 @@ function execute_scene {
 		for (( k=0; k<$ITER_NUM; k++ )); do
 
 			local out_name_path="$OUT_DIR/$OUT_STATS/out_chunks_${NUM_CHUNKS}_${i}_${k}_path.txt"
+			# local out_name_path="/out_files/512x512_2spp/$1/out_chunks_${NUM_CHUNKS}_${i}_${k}_path.txt"
 			echo "executed a ray tracing program $1 with $NUM_CHUNKS chunks, index: $i" &&
 
 			local coordinates_path="$COORDINATES_DIR/chunk_${i}_${k}.coords"
@@ -90,6 +92,19 @@ function main {
 		echo "$pid"
 		wait $pid
 		echo "waited!"
+	done
+
+	for scene in "${!scenes[@]}"; do 
+		for (( i=0; i<$NUM_CHUNKS; i++ )); do
+			for (( k=0; k<$ITER_NUM; k++ )); do
+				local out_name_path_local="$OUT_DIR/$OUT_STATS/out_chunks_${NUM_CHUNKS}_${i}_${k}_path.txt"
+				local out_name_path_remote="/out_files/512x512_2spp/${scene}/${PERC}/out_chunks_${NUM_CHUNKS}_${i}_${k}_path.txt"
+
+				mkdir -p "/out_files/512x512_2spp/${scene}/${PERC}/"
+
+				cp $out_name_path_local $out_name_path_remote
+			done
+		done
 	done
 
 	move_info

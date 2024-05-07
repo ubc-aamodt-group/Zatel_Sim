@@ -57,7 +57,7 @@ def get_distributions(color_maps):
     return dp
 
 
-def select_boxes_for_color_map(color_map, num_boxes, bndrs):
+def select_boxes_for_color_map(color_map, num_boxes, bndrs, all_points):
     num_of_pixels = env.configs.width * env.configs.height
     MAX_ITERATIONS = int(3 * num_of_pixels)
 
@@ -72,85 +72,91 @@ def select_boxes_for_color_map(color_map, num_boxes, bndrs):
 
     valid_points = list(filter(lambda p: (p[0], p[1]) in bndrs, valid_points))
 
-    valid_points = list(filter(lambda p: (p[0]+1) % env.configs.section_width == 0 or p[0] % env.configs.section_width == 0, valid_points))
+    valid_points = list(filter(lambda p: p[0] % env.configs.section_width == 0, valid_points))
+    valid_points = list(filter(lambda p: p[1] % env.configs.section_height == 0, valid_points))
+
+    valid_points = list(filter(lambda p: (p[0], p[1]) in all_points, valid_points))
 
     if not valid_points:
         dprint(env.plvl.warn, "Wasn't able to select boxes")
         return boxes
 
-    copy_valid_points = valid_points.copy()
-    for p in copy_valid_points:
-        new_p = (p[0] - env.configs.section_width, p[1])
-        if (new_p[0] >= 0 and new_p[1] >= 0
-            and new_p not in valid_points):
-            valid_points.append(new_p)
+    # copy_valid_points = valid_points.copy()
+    # for p in copy_valid_points:
+    #     new_p = (p[0] - env.configs.section_width, p[1])
+    #     if (new_p[0] >= 0 and new_p[1] >= 0
+    #         and new_p not in valid_points):
+    #         valid_points.append(new_p)
 
     num_added = 0
     num_iterations = 0
-    while num_added != num_boxes:
+    while num_added < num_boxes and all_points:
         num_iterations = num_iterations + 1
 
         # pick a random coord
         # p = random.randint(0, num_of_pixels - 1)
         # y = p // env.configs.width
         # x = p % env.configs.width
-        x, y = random.choice(valid_points)
+        x, y = random.choice(valid_points) if valid_points else random.choice(all_points)
 
         valid_coord = True
 
         # check if in bounds
-        if (x + env.configs.section_width >= env.configs.width or
-            y + env.configs.section_height >= env.configs.height):
-            valid_coord = False
-            continue
-
-        if not valid_coord:
-            continue
-
-        # check if intersects with previous boxes
-        if num_iterations < MAX_ITERATIONS:
-            for box in boxes:
-                bx, by = box
-                if (x <= bx + env.configs.section_width and
-                    x + env.configs.section_width >= bx and
-                    y <= by + env.configs.section_height and
-                    y + env.configs.section_height >= by):
-                    valid_coord = False
-                    continue
-
-        if not valid_coord:
-            continue
-
-        # check if fills map
-        # if number of max iterations has exceeded,
-        # just choose a valid pixel as the top-left border
-        if num_iterations < MAX_ITERATIONS and not env.configs.enable_edges:
-            for i in range(y, y + env.configs.section_height):
-                for j in range(x, x + env.configs.section_width):
-                    if not mp[i][j]:
-                        valid_coord = False
-                        break
-
-        elif env.configs.enable_edges:
-            found_coord = False
-
-            for i in range(y, y + env.configs.section_height):
-                for j in range(x, x + env.configs.section_width):
-                    if mp[i][j]:
-                        found_coord = True
-                        break
-
-            valid_coord = found_coord
-
-        else:
-            dprint(env.plvl.warn, "Exceeded max iterations")
-            valid_coord = mp[y][x]
-
-        if not valid_coord:
-            continue
+        # if (x + env.configs.section_width > env.configs.width or
+        #     y + env.configs.section_height > env.configs.height):
+        #     valid_coord = False
+        #     continue
+        #
+        # if not valid_coord:
+        #     continue
+        #
+        # # check if intersects with previous boxes
+        # # if num_iterations < MAX_ITERATIONS:
+        # for box in boxes:
+        #     bx, by = box
+        #     if (x < bx + env.configs.section_width and
+        #         x + env.configs.section_width > bx and
+        #         y < by + env.configs.section_height and
+        #         y + env.configs.section_height > by):
+        #         valid_coord = False
+        #         continue
+        #
+        # if not valid_coord:
+        #     continue
+        #
+        # # check if fills map
+        # # if number of max iterations has exceeded,
+        # # just choose a valid pixel as the top-left border
+        # if num_iterations < MAX_ITERATIONS and not env.configs.enable_edges:
+        #     for i in range(y, y + env.configs.section_height):
+        #         for j in range(x, x + env.configs.section_width):
+        #             if not mp[i][j]:
+        #                 valid_coord = False
+        #                 break
+        #
+        # elif env.configs.enable_edges:
+        #     found_coord = False
+        #
+        #     for i in range(y, y + env.configs.section_height):
+        #         for j in range(x, x + env.configs.section_width):
+        #             if mp[i][j]:
+        #                 found_coord = True
+        #                 break
+        #
+        #     valid_coord = found_coord
+        #
+        # else:
+        #     dprint(env.plvl.warn, "Exceeded max iterations")
+        #     valid_coord = mp[y][x]
+        #
+        # if not valid_coord:
+        #     continue
 
         # no intersections, can use this coord
         boxes.append((x, y))
+        if valid_points:
+            valid_points.remove((x, y))
+        all_points.remove((x, y))
         num_added = num_added + 1
         dprint(env.plvl.info, f"Done boxes {num_added}/{num_boxes}")
 
@@ -205,13 +211,12 @@ def select_sections(bndrs, out, chunk_index):
     heatmap_pixels = heatmap_info.labels.reshape(heatmap_info.shape)
     pr = get_percentage_to_trace(heatmap_pixels, bndrs, cluster_colors)
     pr = max(env.configs.min_trace_perc, pr * env.configs.num_pixels_scale)
+    pr = min(pr, 0.6)
 
     env.configs.num_representative_pixels = len(bndrs) * pr
-    env.configs.perc_per_chunk[chunk_index] = pr
 
     if (env.configs.const_percentage >= 0.0):
         env.configs.num_representative_pixels = len(bndrs) * env.configs.const_percentage
-        env.configs.perc_per_chunk[chunk_index] = env.configs.const_percentage
     env.change_configs(env.configs)
 
     distribution_percentages = get_distributions(color_maps)
@@ -221,11 +226,20 @@ def select_sections(bndrs, out, chunk_index):
                        (env.configs.section_width * env.configs.section_height)))
 
     # test for only red for now
+    all_points = list(bndrs)
+    all_points = list(filter(lambda p: p[0] % env.configs.section_width == 0, all_points))
+    all_points = list(filter(lambda p: p[1] % env.configs.section_height == 0, all_points))
+
     all_boxes = []
     for color_map, percentage in zip(color_maps, distribution_percentages):
-        k = int(math.ceil(percentage * num_sections))
-        boxes = select_boxes_for_color_map(color_map, k, bndrs)
+        k = int(math.ceil(percentage * num_sections))+1
+        boxes = select_boxes_for_color_map(color_map, k, bndrs, all_points)
         all_boxes.append(boxes)
 
     all_boxes = list(itertools.chain(*all_boxes))
+
+    env.configs.perc_per_chunk[chunk_index] = len(all_boxes) * env.configs.section_width * env.configs.section_height / len(bndrs)
+    dprint(env.plvl.info, f"Chunk {chunk_index} percentage = {env.configs.perc_per_chunk[chunk_index]}")
+    env.change_configs(env.configs)
+
     add_pixels_in_boxes(all_boxes, out, bndrs)

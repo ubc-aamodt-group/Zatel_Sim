@@ -16,7 +16,7 @@ def merge_configs(configs):
         output_infos.append(configs[i])
 
     for metric in output_infos[0]:
-        if metric == 'gpu_ipc' or metric == 'gpu_sim_cycle':
+        if metric == 'gpu_ipc':
             out[metric] = sum_metric(metric, output_infos, len(output_infos))
         else:
             out[metric] = avg_metric(metric, output_infos, len(output_infos))

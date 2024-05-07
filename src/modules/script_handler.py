@@ -1,5 +1,6 @@
 import os
 import subprocess
+import math
 
 import env
 from modules.helper_methods import dprint
@@ -13,6 +14,7 @@ def setup_script_env():
     shader_type = shader_type_to_code()
 
     header = f"""NUM_CHUNKS={env.configs.num_chunks}
+PERC=\"{int(math.floor(env.configs.const_percentage * 100))}\"
 WIDTH=\"{env.configs.width}\"
 HEIGHT=\"{env.configs.height}\"
 SAMPLES=\"{env.configs.samples}\"

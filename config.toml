@@ -1,5 +1,5 @@
-output = "outputs/512x512_2spp/wknd_path-tracer/10_uniform.json"
-uid = "outputs/512x512_2spp/wknd_path-tracer/uniform/p10"
+output = "out_files_test/512x512_2spp/ref_path-tracer/10_uniform.json"
+uid = "outputs_test/512x512_2spp/ref_path-tracer/uniform/p10"
 
 [tools]
 path = "../"
@@ -13,13 +13,13 @@ lavapipe_vk_icd_filenames = "/home/ggc/ray_tracing/mesa/lib/share/vulkan/icd.d/l
 width = 512
 height = 512
 samples = 2
-scene_name = "wknd"
-scene_number = 1
+scene_name = "ref"
+scene_number = 30
 shader_type = "path-tracer"
 shadow_rays = 2
 
 [heatmap]
-path = "/home/ggc/ray_tracing/Predictor/heatmaps/512x512_2spp/path-tracer/1.ppm"
+path = "/home/ggc/ray_tracing/Predictor/heatmaps/512x512_2spp/path-tracer/30.ppm"
 scale = 1.0
 clusters = 5
 max_iter = 500
@@ -27,13 +27,13 @@ epsilon = 0.05
 
 [model]
 gpuconfig = "gpgpusim.config"
-downscale = false
+downscale_factor = 1
 section_width = 32
 section_height = 2
 iterations = 1
 enable_edges = true
 all_pixels_in_chunks = false
-const_percentage = 0.010
+const_percentage = 0.10
 distribution = "uniform"
 num_pixels_scale = 0.5
 min_trace_perc = 0.05
@@ -42,6 +42,7 @@ chunks_type = "coarse-grained"
 debug = true
 metrics_to_collect = [
 	'gpu_ipc',
+	'gpu_sim_cycle',
 	'rt_avg_nodes_per_ray',
 	'L1D_total_cache_miss_rate',
 	'L2_total_cache_miss_rate',

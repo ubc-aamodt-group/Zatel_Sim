@@ -1,4 +1,6 @@
 import env
+import os.path
+import subprocess
 from modules.helper_methods import dprint
 from modules.setup import setup
 from modules.heatmap_handler import capture_heatmap

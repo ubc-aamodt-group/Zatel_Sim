@@ -22,7 +22,7 @@ function populate_config {
 		-e "s|<<const_perc>>|$8|g" \
 		-e "s|<<dist>>|$9|g" \
 		-e "s|<<all_pixels>>|${all_pixels}|g" \
-		config_template.toml > config.toml
+		config_template_home.toml > config.toml
 }
 
 function get_args {
@@ -54,8 +54,9 @@ for scene_name in "${!scenes[@]}"; do
 
 		mkdir -p "outputs/512x512_2spp/${scene_name}/predictor_outputs/"
 
-		for p in {10..10..10}
-		do
+		p=100
+		# for p in {10..10..10}
+		# do
 			heatmap_path="/home/ggc/ray_tracing/Predictor/heatmaps/512x512_2spp/${shader}/${scenes[$scene_name]}.ppm"
 			out_dir="outputs/512x512_2spp/${scene_name}/${dist}/p${p}"
 			mkdir -p "${out_dir}"
@@ -81,8 +82,8 @@ for scene_name in "${!scenes[@]}"; do
 
 			python3.11 src/main.py > "outputs/512x512_2spp/${scene_name}/predictor_outputs/${p}_${dist}.txt" 2>&1 &
 			PIDS+=($!)
-			sleep 480
-		done
+			sleep 320
+		# done
 	done
 done
 
@@ -95,6 +96,6 @@ for pid in "${PIDS[@]}"; do
 done
 
 curl \
-	-H 'Title: EXPERIMENTS DONE' \
+	-H 'Title: EXPERIMENTS DONE (MOBILE)' \
 	-d 'Finished executing all the scenes' \
 	ntfy.sh/eiAizI8HMMHAqFPyLBYvkTY3Y2y6e7dAg1s5H8BOKTw3XRqeBbC61

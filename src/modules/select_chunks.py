@@ -12,7 +12,7 @@ def select_chunks_coarse_grained(i):
     """
     dprint(env.plvl.info, f"Getting {i}-th chunk's coordinates (coarse-grained)...")
 
-    available_coordinates = set()
+    available_coordinates = []
 
     w, h = env.configs.width, env.configs.height
 
@@ -30,10 +30,11 @@ def select_chunks_coarse_grained(i):
         for xx in range(sw):
             x = x0 + xx
             y = y0 + yy
-            available_coordinates.add((x, y))
+            if x >= 0 and x < w and y >= 0 and y < h:
+                available_coordinates.append((x, y))
 
     dprint(env.plvl.info, f"Got the coordinates for {i}-th chunk (coarse-grained)")
-    return available_coordinates
+    return set(available_coordinates)
 
 
 def select_chunks_fine_grained(i):
@@ -44,7 +45,8 @@ def select_chunks_fine_grained(i):
 
     available_coordinates = set()
 
-    sw, sh = 32, 8
+    # sw, sh = 32, 8
+    sw, sh = env.configs.section_width, env.configs.section_height
 
     w, h = env.configs.width, env.configs.height
     n = env.configs.num_chunks
@@ -70,9 +72,11 @@ def select_chunks_fine_grained(i):
 
 
 def add_chunk_coords(coords, out):
-    for coord in coords:
-        x, y = coord
-        append_coordinates(out, x, y)
+    with open(out, 'w') as f:
+        for coord in coords:
+            x, y = coord
+            # append_coordinates(out, x, y)
+            f.write(f"{x} {y}\n")
 
 
 def select_chunks(i):

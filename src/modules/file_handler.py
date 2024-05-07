@@ -13,7 +13,10 @@ def get_file(filename):
 
 def append_coordinates(filename, x, y):
     file = get_file(filename)
-    file.write(f"{x} {y}\n")
+    try:
+        file.write(f"{x} {y}\n")
+    except:
+        print("APPEND ERR")
 
 
 def close_files():
